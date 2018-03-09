@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <io.github.marijangazica.yetanotherratingbar.YetAnotherRatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:yarb_clickable="true"
+        app:yarb_drawable_bottom_margin="15dp"
+        app:yarb_drawable_left_margin="5dp"
+        app:yarb_drawable_right_margin="15dp"
+        app:yarb_drawable_top_margin="5dp"
+        app:yarb_empty_mark="@drawable/empty_star"
+        app:yarb_full_mark="@drawable/full_star"
+        app:yarb_half_mark="@drawable/half_star"
+        app:yarb_max="5"
+        app:yarb_mode="half"
+        app:yarb_rating="2.5" />
+
+    <TextView
+        android:id="@+id/rating_decrease"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/rating_bar"
+        android:layout_marginBottom="24dp"
+        android:background="#7acaca"
+        android:gravity="center"
+        android:text="@string/decrease_rating"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rating_increase"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/rating_increase"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/rating_bar"
+        android:layout_marginBottom="24dp"
+        android:background="#7acaca"
+        android:gravity="center"
+        android:text="@string/increase_rating"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/rating_decrease" />
+
+</android.support.constraint.ConstraintLayout>
