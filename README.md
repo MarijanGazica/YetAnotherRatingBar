@@ -1,14 +1,14 @@
 # YetAnotherRatingBar
 
-
 YARM is a simple library which enables you to:
   - display rating
   - pick a rating
 
-#Download
+# Download
+
 `    implementation "com.github.marijangazica:yetanotherratingbar:1.0.0"`
 
-#Usage
+# Usage
 
 
 `app:yarb_clickable="true"`
