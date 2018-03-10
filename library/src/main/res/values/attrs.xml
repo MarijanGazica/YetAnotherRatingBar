@@ -2,9 +2,15 @@
 <resources>
 
     <declare-styleable name="YetAnotherRatingBar">
+
         <attr name="yarb_full_mark" format="integer" />
         <attr name="yarb_half_mark" format="integer" />
         <attr name="yarb_empty_mark" format="integer" />
+
+        <attr name="yarb_half_mark_bottom_threshold" format="float" />
+        <attr name="yarb_half_mark_top_threshold" format="float" />
+        <attr name="yarb_full_mark_threshold" format="float" />
+
         <attr name="yarb_max" format="integer" />
         <attr name="yarb_rating" format="float" />
         <attr name="yarb_mode" format="enum">
@@ -12,6 +18,7 @@
             <enum name="full" value="1" />
         </attr>
         <attr name="yarb_clickable" format="boolean" />
+
         <attr name="yarb_drawable_top_margin" format="dimension" />
         <attr name="yarb_drawable_bottom_margin" format="dimension" />
         <attr name="yarb_drawable_left_margin" format="dimension" />

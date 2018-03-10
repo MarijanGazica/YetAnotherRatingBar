@@ -1,4 +1,4 @@
-package io.github.marijangazica.sample
+package com.github.marijangazica.sample
 
 import android.view.View
 

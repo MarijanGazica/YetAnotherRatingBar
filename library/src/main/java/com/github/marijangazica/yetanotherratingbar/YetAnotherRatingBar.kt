@@ -1,4 +1,4 @@
-package io.github.marijangazica.yetanotherratingbar
+package com.github.marijangazica.yetanotherratingbar
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -9,64 +9,101 @@ import android.widget.LinearLayout
 
 
 /**
- * Created by Marijan on 13/01/2017
+ * Created by Marijan Gazica on 10/03/2018
  */
-
-class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+open class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     /**
-     * @param halfMark - drawable which will be displayed if fraction part of rating is bigger than .25 and smaller than .75 (only when half mark mode is enabled)
+     * @property halfMark - drawable which will be displayed as half mark if
+     * [mode] is 0 (half mark enabled) and fraction part of [rating] is
+     * bigger than [halfMarkBottomThreshold] and
+     * smaller than [halfMarkTopThreshold] (only when half mark mode is enabled)
      */
     var halfMark: Drawable
 
     /**
-     * @param emptyMark - drawable which will be displayed as empty mark
+     * @property emptyMark - drawable which will be displayed as empty mark
      */
     var emptyMark: Drawable
 
     /**
-     * @param fullMark - drawable which will be displayed as full mark
+     * @property fullMark - drawable which will be displayed as full mark
      */
     var fullMark: Drawable
 
     /**
-     * @param mode - marks the mode of value display
+     * @property mode - marks the mode of [rating] display
      * 0 -> half mode enabled
      * 1 -> half mode disabled
      */
     private var mode: Int = 0
 
     /**
-     * @param maxRating - sets the maximum rating that can be displayed
+     * @property halfMarkBottomThreshold - marks at which threshold will [rating]
+     * decimal part be shown as [halfMark] instead of [emptyMark]
+     */
+    var halfMarkBottomThreshold: Float = 0.25f
+        set(newValue) {
+            val newBottomThreshold = newValue % 1
+            if (newBottomThreshold > halfMarkTopThreshold) halfMarkTopThreshold = newBottomThreshold
+            field = newBottomThreshold
+            refreshMarks()
+        }
+
+    /**
+     * @property halfMarkTopThreshold - marks at which threshold will [rating]
+     * decimal part be shown as [fullMark] instead of [halfMark]
+     */
+    var halfMarkTopThreshold: Float = 0.75f
+        set(newValue) {
+            val newTopThreshold = newValue % 1
+            if (newTopThreshold < halfMarkBottomThreshold) halfMarkBottomThreshold = newTopThreshold
+            field = newTopThreshold
+            refreshMarks()
+        }
+
+    /**
+     * @property fullMarkThreshold - marks at which threshold will [rating]
+     * decimal part be shown as [fullMark] instead of [emptyMark]
+     */
+    var fullMarkThreshold: Float = 0.5f
+        set(newValue) {
+            field = newValue % 1
+            refreshMarks()
+        }
+
+    /**
+     * @property maxRating - sets the maximum [rating] that can be displayed
      */
     var maxRating: Int = 5
         set(newValue) {
             field = newValue
             refreshMarks()
+            onRatingChanged(rating, newValue)
         }
 
     /**
-     * @param newRating - sets the rating which will be displayed according to display mode
+     * @property rating - sets the rating which will be displayed according to display mode
      */
     var rating: Float = 0f
         set(newValue) {
             field = newValue
             setMarkIcons()
+            onRatingChanged(newValue, maxRating)
         }
 
     /**
-     * @param ratingEditable - marks if user clicks will change rating according to icon clicked
+     * @property ratingEditable - marks if user clicks will change [rating] displayed
      */
     var ratingEditable: Boolean = false
 
     /**
-     * @param clickListener - listener for users tap input
+     * @property onRatingChanged - listener for rating bar value changes
      */
-    private var clickListener: (Int, Int) -> Unit = { rating: Int, max: Int -> }
-
+    var onRatingChanged: (Float, Int) -> Unit = { rating: Float, max: Int -> }
 
     /**
-     * @param drawableLeftMargin (in pixels) - sets left margin for all marks in view
+     * @property drawableLeftMargin (in pixels) - sets left margin for all marks in view
      */
     var drawableLeftMargin: Float = 0f
         set(newValue) {
@@ -75,27 +112,27 @@ class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(
         }
 
     /**
-     * @param drawableRightMargin (in pixels) - sets right margin for all marks in view
+     * @property drawableRightMargin (in pixels) - sets right margin for all marks in view
      */
-    private var drawableRightMargin: Float = 0f
+    var drawableRightMargin: Float = 0f
         set(newValue) {
             field = newValue
             reloadMarkMargins()
         }
 
     /**
-     * @param drawableTopMargin (in pixels) - sets top margin for all marks in view
+     * @property drawableTopMargin (in pixels) - sets top margin for all marks in view
      */
-    private var drawableTopMargin: Float = 0f
+    var drawableTopMargin: Float = 0f
         set(newValue) {
             field = newValue
             reloadMarkMargins()
         }
 
     /**
-     * @param drawableBottomMargin (in pixels) sets bottom margin for all marks in view
+     * @property drawableBottomMargin (in pixels) sets bottom margin for all marks in view
      */
-    private var drawableBottomMargin: Float = 0f
+    var drawableBottomMargin: Float = 0f
         set(newValue) {
             field = newValue
             reloadMarkMargins()
@@ -104,9 +141,12 @@ class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(
     init {
         orientation = LinearLayout.HORIZONTAL
         val a = context.obtainStyledAttributes(attrs, R.styleable.YetAnotherRatingBar)
-        halfMark = a.getDrawable(R.styleable.YetAnotherRatingBar_yarb_half_mark)
-        emptyMark = a.getDrawable(R.styleable.YetAnotherRatingBar_yarb_empty_mark)
-        fullMark = a.getDrawable(R.styleable.YetAnotherRatingBar_yarb_full_mark)
+        halfMark = a.getDrawable(R.styleable.YetAnotherRatingBar_yarb_half_mark) ?: context.resources.getDrawable(R.drawable.half_star)
+        emptyMark = a.getDrawable(R.styleable.YetAnotherRatingBar_yarb_empty_mark) ?: context.resources.getDrawable(R.drawable.empty_star)
+        fullMark = a.getDrawable(R.styleable.YetAnotherRatingBar_yarb_full_mark) ?: context.resources.getDrawable(R.drawable.full_star)
+        halfMarkBottomThreshold = a.getFloat(R.styleable.YetAnotherRatingBar_yarb_half_mark_bottom_threshold, 0.25f)
+        halfMarkTopThreshold = a.getFloat(R.styleable.YetAnotherRatingBar_yarb_half_mark_top_threshold, 0.75f)
+        fullMarkThreshold = a.getFloat(R.styleable.YetAnotherRatingBar_yarb_full_mark_threshold, 0.5f)
         mode = a.getInt(R.styleable.YetAnotherRatingBar_yarb_mode, 0)
         maxRating = a.getInt(R.styleable.YetAnotherRatingBar_yarb_max, 5)
         rating = a.getFloat(R.styleable.YetAnotherRatingBar_yarb_rating, 0f)
@@ -119,13 +159,11 @@ class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(
         a.recycle()
     }
 
-
     private fun addMarkViews(context: Context) {
         for (i in 0 until maxRating) {
             val imageView = getRankingDrawable(context)
 
             imageView.setOnClickListener {
-                clickListener(indexOfChild(it) + 1, maxRating)
                 if (ratingEditable) {
                     rating = (indexOfChild(it) + 1).toFloat()
                 }
@@ -161,7 +199,7 @@ class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(
 
             // only full marks mode
             if (mode == 1) {
-                if (rating >= position + 0.5) {
+                if (rating >= position + fullMarkThreshold) {
                     view.setImageDrawable(fullMark)
                 } else {
                     view.setImageDrawable(emptyMark)
@@ -172,11 +210,11 @@ class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(
             if (mode == 0) {
                 if (rating >= position + 1) {
                     view.setImageDrawable(fullMark)
-                } else if (rating - position > 0.25 && rating - position < 0.75) {
+                } else if (rating - position > halfMarkBottomThreshold && rating - position < halfMarkTopThreshold) {
                     view.setImageDrawable(halfMark)
-                } else if (rating - position <= 0.25) {
+                } else if (rating - position <= halfMarkBottomThreshold) {
                     view.setImageDrawable(emptyMark)
-                } else if (rating - position >= 0.75) {
+                } else if (rating - position >= halfMarkTopThreshold) {
                     view.setImageDrawable(fullMark)
                 }
             }
@@ -195,12 +233,9 @@ class YetAnotherRatingBar(context: Context, attrs: AttributeSet) : LinearLayout(
     }
 
     /**
-     * @param halfMarkEnabled Sets if half marks will be used
-     * true - half star if fraction part of rating is bigger than .25 and smaller than .75
-     * false - full star added if fraction part of rating is bigger or equal to .5
+     * @param halfMarkEnabled - defines if half marks will be used
      */
     fun setHalfMarksEnabledMode(halfMarkEnabled: Boolean) {
         this.mode = if (halfMarkEnabled) 0 else 1
     }
-
 }
