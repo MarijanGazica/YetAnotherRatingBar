@@ -6,7 +6,7 @@ YARM is a simple library which enables you to:
 
 # Download
 
-`    implementation "com.github.marijangazica:yetanotherratingbar:1.0.0"`
+`    implementation "com.github.marijangazica:yetanotherratingbar:1.1.0"`
 
 # Usage
 
