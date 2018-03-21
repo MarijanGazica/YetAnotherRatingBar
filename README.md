@@ -9,7 +9,6 @@ YARM is a simple library which enables you to:
 `    implementation "com.github.marijangazica:yetanotherratingbar:1.1.0"`
 
 # Usage
-Readme reformatted 
 |Attribute name|What it does|
 |--------------|------------|
 |`app:yarb_clickable="true"`|- enables user interaction witha widget (tapping it will change its value according to tapped value)|
@@ -23,4 +22,3 @@ Readme reformatted
 |`app:yarb_max="5"`|- defines maximum value that can be displayed|
 |`app:yarb_mode="half"`|- defines mode used for displaying rating (full - only full or empty state showed, half - will show half full star if rating is n.25-n.75)|
 |`app:yarb_rating="2.5"`|- defines initial rating when displaying the widget|
-Readme reformatted 
