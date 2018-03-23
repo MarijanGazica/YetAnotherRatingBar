@@ -8,6 +8,18 @@ YARM is a simple library which enables you to:
 
 `    implementation "com.github.marijangazica:yetanotherratingbar:1.1.0"`
 
+# How it looks like
+
+Half mode active, user clickable enabled
+
+![Half mode with tap listener enabled](https://media.giphy.com/media/w6M2zRatPS9XTzgCus/giphy.gif)
+
+Full mode active, user clickable disabled
+
+![Full mode with tap listener disabled](https://media.giphy.com/media/9Y5iMueipJDf9kxmQZ/giphy.gif)
+
+
+
 # Usage
 
 
